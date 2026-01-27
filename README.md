@@ -215,13 +215,13 @@ All drivers run as user-space processes with message-based communication:
 
 ## Future Enhancements
 
-### Phase 2 (6-12 months)
+### Phase 2 
 - Extended filesystem support (ext2, ext3)
 - Basic networking stack (TCP/IP)
 - Network drivers and services
 - Enhanced security features
 
-### Phase 3 (12-18 months)
+### Phase 3 
 - GUI system support
 - Multi-core processor support
 - 64-bit architecture support
