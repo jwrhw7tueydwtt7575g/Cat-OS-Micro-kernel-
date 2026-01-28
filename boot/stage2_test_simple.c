@@ -1,5 +1,5 @@
-// MiniSecureOS Stage 2 Bootloader - Simple 16-bit Version
-// Just verifies disk read works
+// MiniSecureOS Stage 2 Bootloader - Simple Test
+// Just prints to verify it's working
 
 #include <stdint.h>
 
@@ -23,16 +23,22 @@ static void print_string_bios(const char* str) {
 
 // Stage 2 main function - 16-bit real mode
 void stage2_main(void) {
-    print_string_bios("MiniSecureOS Stage 2 - 16-bit mode\r\n");
-    print_string_bios("Disk read successful!\r\n");
+    // Clear screen and set video mode
+    __asm__ volatile(
+        "mov $0x0003, %%ax\n"
+        "int $0x10\n"
+        :
+        :
+        : "eax"
+    );
+    
+    print_string_bios("=== STAGE 2 WORKING! ===\r\n");
+    print_string_bios("Stage 2: 16-bit mode OK!\r\n");
+    print_string_bios("BIOS printing works!\r\n");
     print_string_bios("Halting system...\r\n");
     
     // Halt the system
-    __asm__ volatile(
-        "cli\n"
-        "hlt\n"
-        "jmp 1f\n"
-        "1:\n"
-        "jmp 1b"
-    );
+    while (1) {
+        __asm__ volatile("hlt");
+    }
 }

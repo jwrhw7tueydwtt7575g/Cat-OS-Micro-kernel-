@@ -120,7 +120,22 @@ void process_exit(pcb_t* process, uint32_t exit_code) {
             msg->data_size = payload_size;
             msg->next = NULL;
             *(uint32_t*)msg->data = process->pid;
-            ipc_send(parent->pid, msg);
+            ipc_abi_message_t abi_msg;
+            abi_msg.msg_id = msg->msg_id;
+            abi_msg.sender_pid = msg->sender_pid;
+            abi_msg.receiver_pid = msg->receiver_pid;
+            abi_msg.msg_type = msg->msg_type;
+            abi_msg.flags = msg->flags;
+            abi_msg.timestamp = msg->timestamp;
+            abi_msg.data_size = msg->data_size;
+            if (msg->data_size > 256) {
+                abi_msg.data_size = 256;
+            }
+            // Manual memory copy since string.h is not available
+            for (uint32_t i = 0; i < abi_msg.data_size; i++) {
+                abi_msg.data[i] = msg->data[i];
+            }
+            ipc_send(parent->pid, &abi_msg);
         }
     }
     

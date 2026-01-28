@@ -1,11 +1,15 @@
-// MiniSecureOS Stage 2 Bootloader - Simple Test Version
+// MiniSecureOS Stage 2 Bootloader
 // Sets up protected mode and loads kernel
 
 #include <stdint.h>
 
 // I/O port definitions
-#define PORT_KEYBOARD_STATUS 0x64
+#define PORT_PIC_MASTER_CMD  0x20
+#define PORT_PIC_MASTER_DATA  0x21
+#define PORT_PIC_SLAVE_CMD   0xA0
+#define PORT_PIC_SLAVE_DATA  0xA1
 #define PORT_KEYBOARD_DATA   0x60
+#define PORT_KEYBOARD_STATUS 0x64
 
 // Memory addresses
 #define KERNEL_LOAD_ADDR 0x100000  // 1MB mark
@@ -43,7 +47,6 @@ static void read_disk(uint32_t lba, uint8_t sectors, void* buffer);
 // Stage 2 main function
 void stage2_main(void) {
     print_string("MiniSecureOS Stage 2 Bootloader\r\n");
-    print_string("Starting initialization...\r\n");
     
     // Enable A20 line for access to memory above 1MB
     enable_a20_line();
@@ -58,7 +61,6 @@ void stage2_main(void) {
     print_string("Kernel loaded\r\n");
     
     // Enter protected mode and jump to kernel
-    print_string("Entering protected mode...\r\n");
     enter_protected_mode();
     
     // Should never reach here
@@ -99,15 +101,30 @@ static void print_string_vga(const char* str) {
 
 // Enable A20 line using keyboard controller method
 static void enable_a20_line(void) {
-    // Simple A20 enable using fast method
-    __asm__ volatile(
-        "inb $0x92, %%al\n"
-        "orb $0x02, %%al\n"
-        "outb %%al, $0x92"
-        :
-        :
-        : "eax"
-    );
+    uint8_t temp;
+    
+    // Disable keyboard
+    __asm__ volatile("inb %1, %0" : "=a"(temp) : "Nd"(PORT_KEYBOARD_STATUS));
+    __asm__ volatile("outb %0, %1" : : "a"(temp), "Nd"(PORT_KEYBOARD_STATUS));
+    
+    // Read output port
+    __asm__ volatile("inb %1, %0" : "=a"(temp) : "Nd"(PORT_KEYBOARD_DATA));
+    
+    // Write command to enable A20
+    temp = 0xD1;
+    __asm__ volatile("outb %0, %1" : : "a"(temp), "Nd"(PORT_KEYBOARD_STATUS));
+    
+    // Enable A20 bit
+    temp = 0xDF;
+    __asm__ volatile("outb %0, %1" : : "a"(temp), "Nd"(PORT_KEYBOARD_DATA));
+    
+    // Wait for completion
+    uint32_t timeout = 100000;
+    while (timeout--) {
+        uint8_t status;
+        __asm__ volatile("inb %1, %0" : "=a"(status) : "Nd"(PORT_KEYBOARD_STATUS));
+        if (!(status & 0x02)) break;
+    }
 }
 
 // Setup Global Descriptor Table
@@ -187,7 +204,7 @@ void protected_mode_entry(void) {
     );
     
     // Setup stack
-    __asm__ volatile("mov $0x90000, %esp");
+    __asm__ volatile("mov $0x90000, %%esp");
     
     // Print success message in protected mode
     print_string_vga("Protected mode entered successfully!\r\n");
@@ -216,11 +233,22 @@ static void read_disk(uint32_t lba, uint8_t sectors, void* buffer) {
     uint8_t head = (lba / 18) % 2;
     uint8_t sector = (lba % 18) + 1;
     
-    // Use BIOS interrupt 0x13 to read sectors
+    uint16_t ax_val = 0x0200 | sectors;  // AH=0x02 (read), AL=sectors
+    
     __asm__ volatile(
-        "int $0x13"
+        "mov %2, %%ah\n"         // AH = sectors count
+        "mov %3, %%ch\n"         // Cylinder
+        "mov %4, %%cl\n"         // Sector
+        "mov %5, %%dh\n"         // Head
+        "movb $0x00, %%dl\n"      // Drive A
+        "int $0x13\n"
+        "jc 1f\n"
+        "jmp 2f\n"
+        "1:\n"
+        "jmp 1f\n"  // Infinite loop on error
+        "2:\n"
         :
-        : "a"(0x0200 | sectors), "b"(buffer), "c"((cylinder << 8) | sector), "d"(head << 8)
+        : "b"(buffer), "a"(ax_val), "r"(sectors), "r"(cylinder), "r"(sector), "r"(head)
         : "memory"
     );
 }

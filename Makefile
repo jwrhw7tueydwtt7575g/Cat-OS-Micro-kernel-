@@ -44,11 +44,17 @@ $(BOOT_STAGE1): $(BOOT_DIR)/stage1.asm
 	@mkdir -p $(BUILD_DIR)
 	$(AS) -f bin -o $@ $<
 
-$(BOOT_STAGE2): $(BOOT_DIR)/stage2_c.o $(BOOT_DIR)/stage2.ld
-	$(LD) -m elf_i386 -T $(BOOT_DIR)/stage2.ld -o $@ $<
+$(BOOT_STAGE2): $(BOOT_DIR)/stage2_stub.o $(BOOT_DIR)/stage2_c.o $(BOOT_DIR)/stage2.ld
+$(BOOT_STAGE2): $(BOOT_DIR)/stage2_stub.bin $(BOOT_DIR)/stage2_c.bin
+	cat $(BOOT_DIR)/stage2_stub.bin $(BOOT_DIR)/stage2_c.bin > $@
+$(BOOT_DIR)/stage2_stub.bin: $(BOOT_DIR)/stage2_stub.asm
+	$(AS) -f bin -o $@ $<
 
-$(BOOT_DIR)/stage2_c.o: $(BOOT_DIR)/stage2_minimal.c
+$(BOOT_DIR)/stage2_c.bin: $(BOOT_DIR)/stage2_c.c
+	$(CC) $(CFLAGS) -c -o $(BOOT_DIR)/stage2_c.o $(BOOT_DIR)/stage2_c.c
+	$(LD) -m elf_i386 --oformat binary -Ttext 0x2000 $(BOOT_DIR)/stage2_c.o -o $@
 	$(CC) $(CFLAGS) -c -o $@ $<
+
 
 # Kernel
 KERNEL_OBJS = \
@@ -69,6 +75,8 @@ HAL_OBJS = \
 
 $(KERNEL_ELF): $(KERNEL_OBJS) $(HAL_OBJS) $(KERNEL_DIR)/kernel.ld
 	$(LD) $(LDFLAGS) -T $(KERNEL_DIR)/kernel.ld -o $@ $(KERNEL_OBJS) $(HAL_OBJS)
+	objcopy -O binary $@ $(BUILD_DIR)/kernel.bin
+	dd if=$(BUILD_DIR)/kernel.bin of=$(BUILD_DIR)/disk.img bs=512 seek=9 conv=notrunc 2>/dev/null
 
 # Kernel object files
 $(BUILD_DIR)/kernel/%.o: $(KERNEL_DIR)/%.c

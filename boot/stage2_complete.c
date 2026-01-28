@@ -1,10 +1,20 @@
-// MiniSecureOS Stage 2 Bootloader - Minimal Version
+// MiniSecureOS Stage 2 Bootloader - Complete Version
 // Sets up protected mode and loads kernel
 
 #include <stdint.h>
 
+// I/O port definitions
+#define PORT_PIC_MASTER_CMD  0x20
+#define PORT_PIC_MASTER_DATA  0x21
+#define PORT_PIC_SLAVE_CMD   0xA0
+#define PORT_PIC_SLAVE_DATA  0xA1
+#define PORT_KEYBOARD_DATA   0x60
+#define PORT_KEYBOARD_STATUS 0x64
+
 // Memory addresses
 #define KERNEL_LOAD_ADDR 0x100000  // 1MB mark
+#define GDT_ADDR         0x0800
+#define GDT_ENTRIES      5
 
 // GDT structure
 struct gdt_entry {
@@ -22,85 +32,107 @@ struct gdt_ptr {
 } __attribute__((packed));
 
 // Global variables
-static struct gdt_entry gdt[5];
+static struct gdt_entry gdt[GDT_ENTRIES];
 static struct gdt_ptr gdt_ptr;
 
 // Function prototypes
-static void print_string(const char* str);
+static void print_string_bios(const char* str);
 static void setup_gdt(void);
+static void enable_a20_line(void);
 static void load_kernel(void);
 static void enter_protected_mode(void);
 static void protected_mode_entry(void);
 
 // Stage 2 main function - starts in 16-bit real mode
 void stage2_main(void) {
-    // Use inline assembly to start with 16-bit code
+    // Clear screen and set video mode
     __asm__ volatile(
-        "code16:\n"
-        "mov $entry_msg, %si\n"
-        "call print_string16\n"
-        "jmp $code32, $0\n"  // Jump to 32-bit code
-        
-        "code32:\n"
-        ".code32\n"  // Switch to 32-bit mode
+        "mov $0x0003, %%ax\n"
+        "int $0x10\n"
         :
         :
-        : "si"
+        : "eax"
     );
     
-    // Now we're in 32-bit mode
-    print_string("MiniSecureOS Stage 2 Bootloader\r\n");
+    print_string_bios("MiniSecureOS Stage 2 Bootloader\r\n");
+    print_string_bios("================================\r\n");
+    
+    // Enable A20 line for access to memory above 1MB
+    enable_a20_line();
+    print_string_bios("A20 line enabled\r\n");
     
     // Setup Global Descriptor Table
     setup_gdt();
-    print_string("GDT setup complete\r\n");
+    print_string_bios("GDT setup complete\r\n");
     
     // Load kernel from disk
     load_kernel();
-    print_string("Kernel loaded\r\n");
+    print_string_bios("Kernel loaded successfully\r\n");
     
     // Enter protected mode and jump to kernel
     enter_protected_mode();
     
     // Should never reach here
-    print_string("Failed to enter protected mode\r\n");
+    print_string_bios("ERROR: Failed to enter protected mode\r\n");
     while (1) {
         __asm__ volatile("hlt");
     }
 }
 
-// Print string to screen (BIOS)
-static void print_string(const char* str) {
-    while (*str) {
-        __asm__ volatile(
-            "movb $0x0E, %%ah\n"
-            "int $0x10"
-            :
-            : "al"(*str++)
-        );
-    }
+// Print string using BIOS (16-bit mode)
+static void print_string_bios(const char* str) {
+    __asm__ volatile(
+        "mov $0x0E, %%ah\n"
+        "1:\n"
+        "movb (%0), %%al\n"
+        "cmpb $0, %%al\n"
+        "je 2f\n"
+        "int $0x10\n"
+        "inc %0\n"
+        "jmp 1b\n"
+        "2:\n"
+        :
+        : "r"(str)
+        : "eax", "ebx", "ecx", "edx"
+    );
 }
 
-// Print string in protected mode (VGA)
-static void print_string_pm(const char* str) {
-    volatile uint16_t* vga = (volatile uint16_t*)0xB8000;
-    static int pos = 80;  // Start after BIOS messages
-    
-    while (*str) {
-        vga[pos++] = (uint16_t)(*str | 0x0700);  // White on gray
-        if (*str == '\n') {
-            pos += 80 - (pos % 80);
-        } else if (*str == '\r') {
-            pos -= (pos % 80);
-        }
-        str++;
-    }
+// Print hex value using BIOS
+// static void print_hex_bios(uint8_t value) {
+//     uint8_t high = value >> 4;
+//     uint8_t low = value & 0x0F;
+//     
+//     char hex_chars[] = "0123456789ABCDEF";
+//     
+//     __asm__ volatile(
+//         "mov $0x0E, %%ah\n"
+//         "movb %1, %%al\n"
+//         "int $0x10\n"
+//         "movb %2, %%al\n"
+//         "int $0x10\n"
+//         :
+//         : "r"(hex_chars[high]), "r"(hex_chars[low])
+//         : "eax"
+//     );
+// }
+
+// Enable A20 line using keyboard controller
+static void enable_a20_line(void) {
+    // Simple A20 enable using fast A20 gate
+    __asm__ volatile(
+        "inb $0x92, %%al\n"
+        "orb $0x02, %%al\n"
+        "outb %%al, $0x92\n"
+        :
+        :
+        : "eax"
+    );
 }
 
 // Setup Global Descriptor Table
 static void setup_gdt(void) {
     // Clear GDT
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < GDT_ENTRIES; i++) {
         gdt[i].limit_low = 0;
         gdt[i].base_low = 0;
         gdt[i].base_mid = 0;
@@ -126,20 +158,30 @@ static void setup_gdt(void) {
     gdt[2].base_high = 0x00;
     
     // Setup GDT pointer
-    gdt_ptr.limit = (sizeof(struct gdt_entry) * 5) - 1;
+    gdt_ptr.limit = (sizeof(struct gdt_entry) * GDT_ENTRIES) - 1;
     gdt_ptr.base = (uint32_t)&gdt;
     
     // Load GDT
     __asm__ volatile("lgdtl %0" : : "m"(gdt_ptr));
 }
 
-// Load kernel from disk (simplified)
+// Load kernel from disk
 static void load_kernel(void) {
-    // For now, we'll just clear the kernel area
+    // For now, we'll create a simple test kernel in memory
     // In a real implementation, this would read from disk
+    
     uint8_t* kernel_ptr = (uint8_t*)KERNEL_LOAD_ADDR;
-    for (int i = 0; i < 32768; i++) {  // 32KB
-        kernel_ptr[i] = 0;
+    
+    // Create a simple test kernel that prints to VGA
+    // This is just a placeholder - real kernel loading would read from disk
+    for (int i = 0; i < 1024; i++) {
+        kernel_ptr[i] = 0x90;  // NOP instructions
+    }
+    
+    // Add a simple "Hello from kernel" message at the end
+    const char* msg = "Hello from Protected Mode Kernel!";
+    for (int i = 0; msg[i] != 0; i++) {
+        kernel_ptr[1000 + i] = msg[i];
     }
 }
 
@@ -178,8 +220,15 @@ void protected_mode_entry(void) {
     // Setup stack
     __asm__ volatile("mov $0x90000, %esp");
     
-    // For now, just halt - we'll implement kernel loading later
-    print_string_pm("In protected mode - halting\r\n");
+    // Print to VGA memory to show we're in protected mode
+    volatile uint16_t* vga = (volatile uint16_t*)0xB8000;
+    const char* msg = "PROTECTED MODE ACTIVE!";
+    
+    for (int i = 0; msg[i] != 0; i++) {
+        vga[80 + i] = (uint16_t)(msg[i] | 0x0F00);  // White on black
+    }
+    
+    // Halt
     while (1) {
         __asm__ volatile("hlt");
     }

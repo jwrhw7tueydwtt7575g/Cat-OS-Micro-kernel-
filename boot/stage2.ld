@@ -4,7 +4,7 @@ ENTRY(stage2_main)
 
 SECTIONS
 {
-    . = 0x1000;  /* Load at 0x1000 */
+    . = 0x10000;  /* Load at 0x10000 (0x1000:0000 in real mode) */
     
     .text :
     {

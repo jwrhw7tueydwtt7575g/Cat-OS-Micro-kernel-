@@ -5,6 +5,21 @@
 #include "hal.h"
 #include <stddef.h>
 
+// VGA text mode memory
+#define VGA_MEMORY 0xB8000
+#define VGA_WIDTH  80
+
+// Simple VGA print function
+static void vga_print(const char* str, int line) {
+    volatile uint16_t* vga = (volatile uint16_t*)VGA_MEMORY;
+    int pos = line * VGA_WIDTH;
+    
+    while (*str) {
+        vga[pos++] = (uint16_t)(*str | 0x0F00);  // White on black
+        str++;
+    }
+}
+
 // Simple memory functions (since we don't have libc)
 void* memcpy(void* dest, const void* src, uint32_t n) {
     uint8_t* d = (uint8_t*)dest;
@@ -33,12 +48,17 @@ static bool kernel_initialized = false;
 // Forward declarations
 static void clear_bss(void);
 static void init_interrupts(void);
-static void start_init_process(void);
+// static void start_init_process(void);
 
 // Kernel main entry point
 void kernel_main(void) {
     // Clear BSS section
     clear_bss();
+    
+    // Clear screen and show we're in protected mode
+    vga_print("Cat-OS Microkernel v1.0", 0);
+    vga_print("========================", 1);
+    vga_print("Initializing kernel subsystems...", 2);
     
     // Initialize HAL first
     hal_cpu_init();
@@ -46,32 +66,39 @@ void kernel_main(void) {
     hal_timer_init(100);  // 100 Hz timer
     hal_pic_init();
     
-    // Print welcome message
-    kernel_print("MiniSecureOS Kernel v1.0\r\n");
-    kernel_print("Initializing kernel subsystems...\r\n");
+    // Disable timer interrupt initially to avoid spam
+    // hal_timer_disable_irq();
+    
+    vga_print("HAL initialized", 3);
     
     // Initialize kernel subsystems
     memory_init();
-    scheduler_init();
-    ipc_init();
-    capability_init();
-    syscall_init();
-    init_interrupts();
+    vga_print("Memory manager initialized", 4);
     
-    kernel_print("Kernel initialization complete\r\n");
+    scheduler_init();
+    vga_print("Scheduler initialized", 5);
+    
+    ipc_init();
+    vga_print("IPC system initialized", 6);
+    
+    capability_init();
+    vga_print("Capability system initialized", 7);
+    
+    syscall_init();
+    vga_print("System calls initialized", 8);
+    
+    init_interrupts();
+    vga_print("Interrupts initialized", 9);
     
     // Mark kernel as initialized
     kernel_initialized = true;
+    vga_print("Kernel initialization complete!", 10);
+    vga_print("Cat-OS Microkernel is RUNNING!", 11);
+    vga_print("Press Ctrl+C to exit QEMU", 12);
     
-    // Start first user process (init)
-    start_init_process();
-    
-    // Enable interrupts and start scheduling
-    hal_cpu_enable_interrupts();
-    
-    // Main kernel loop
+    // Halt and show success message
     while (1) {
-        hal_cpu_halt();
+        __asm__ volatile("hlt");
     }
 }
 
@@ -90,52 +117,21 @@ static void init_interrupts(void) {
     // Set up interrupt descriptor table (IDT)
     // This will be implemented in interrupt_init()
     interrupt_init();
-    
-    kernel_print("Interrupt system initialized\r\n");
-}
-
-// Start init process (PID 1)
-static void start_init_process(void) {
-    kernel_print("Starting init process...\r\n");
-    
-    // Create init process
-    pcb_t* init_process = process_create(0);  // Parent is kernel
-    
-    if (!init_process) {
-        kernel_panic("Failed to create init process");
-    }
-    
-    // Set up init process
-    init_process->priority = 1;  // High priority
-    init_process->state = PROCESS_READY;
-    
-    // Add to scheduler
-    scheduler_add_process(init_process);
-    
-    kernel_print("Init process created with PID ");
-    kernel_print_hex(init_process->pid);
-    kernel_print("\r\n");
 }
 
 // Kernel panic handler
 void kernel_panic(const char* message) {
-    kernel_print("KERNEL PANIC: ");
-    kernel_print(message);
-    kernel_print("\r\n");
+    vga_print("KERNEL PANIC: ", 20);
+    vga_print(message, 21);
     
-    // Disable interrupts
-    hal_cpu_disable_interrupts();
-    
-    // Halt system
     while (1) {
-        hal_cpu_halt();
+        __asm__ volatile("hlt");
     }
 }
 
 // Simple kernel print function
 void kernel_print(const char* str) {
     // For now, we'll use a simple VGA text mode output
-    // This will be enhanced with proper console driver later
     static uint16_t* vga_memory = (uint16_t*)0xB8000;
     static uint32_t position = 0;
     
@@ -156,7 +152,6 @@ void kernel_print(const char* str) {
                 }
                 position -= 80;
             }
-            position = (position / 80) * 80;
         } else {
             // Regular character
             vga_memory[position++] = (0x07 << 8) | *str;
