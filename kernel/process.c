@@ -12,7 +12,7 @@ static bool process_used[MAX_PROCESSES];
 // Forward declarations
 static uint32_t process_allocate_pid(void);
 static void process_free_pid(uint32_t pid);
-static void process_setup_stack(pcb_t* process, uint32_t entry_point);
+void process_setup_stack(pcb_t* process, uint32_t entry_point);
 static void process_cleanup(pcb_t* process);
 
 // Initialize process management
@@ -280,7 +280,7 @@ static void process_free_pid(uint32_t pid) {
 }
 
 // Setup process stack
-static void process_setup_stack(pcb_t* process, uint32_t entry_point) {
+void process_setup_stack(pcb_t* process, uint32_t entry_point) {
     if (!process) {
         return;
     }
@@ -288,15 +288,30 @@ static void process_setup_stack(pcb_t* process, uint32_t entry_point) {
     // Setup kernel stack
     uint32_t* kernel_stack = (uint32_t*)(process->kernel_stack + KERNEL_STACK_SIZE);
     
-    // Push initial register values
-    *--kernel_stack = entry_point;      // EIP
+    // Initial iret frame
     *--kernel_stack = 0x23;             // SS (user data segment)
     *--kernel_stack = process->user_stack + USER_STACK_SIZE;  // ESP
     *--kernel_stack = 0x202;           // EFLAGS (interrupts enabled)
     *--kernel_stack = 0x1B;            // CS (user code segment)
+    *--kernel_stack = entry_point;     // EIP
     
-    // Save stack pointer
-    process->registers[4] = (uint32_t)kernel_stack;  // ESP
+    // Dummy error code and interrupt number (for interrupt_common's add $8, %esp)
+    *--kernel_stack = 0;               // error_code
+    *--kernel_stack = 0;               // interrupt_number
+    
+    // pusha (EAX, ECX, EDX, EBX, Original_ESP, EBP, ESI, EDI)
+    for (int i = 0; i < 8; i++) {
+        *--kernel_stack = 0;           // Dummy register values
+    }
+    
+    // Segments (GS, FS, ES, DS)
+    *--kernel_stack = 0x23;            // DS
+    *--kernel_stack = 0x23;            // ES
+    *--kernel_stack = 0x23;            // FS
+    *--kernel_stack = 0x23;            // GS
+    
+    // Save stack pointer to pcb's registers[4] (ESP index in scheduler)
+    process->registers[4] = (uint32_t)kernel_stack;
 }
 
 // Clean up process resources

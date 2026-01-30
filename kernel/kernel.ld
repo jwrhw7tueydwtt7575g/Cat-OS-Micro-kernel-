@@ -1,6 +1,6 @@
 /* Kernel Linker Script */
 
-ENTRY(kernel_main)
+ENTRY(_start)
 
 SECTIONS
 {
@@ -8,6 +8,8 @@ SECTIONS
     
     .text :
     {
+        *(.entry)
+        *(.text.entry)
         *(.text)
         *(.rodata*)
         . = ALIGN(4096);

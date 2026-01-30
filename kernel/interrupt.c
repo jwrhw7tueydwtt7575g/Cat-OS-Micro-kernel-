@@ -90,9 +90,6 @@ void interrupt_init(void) {
     // Load IDT
     __asm__ volatile("lidt %0" : : "m"(idt_ptr));
     
-    // Enable interrupts
-    hal_cpu_enable_interrupts();
-    
     kernel_print("Interrupt system initialized\r\n");
 }
 
@@ -248,31 +245,25 @@ __asm__ (
 
 "double_fault_handler:\n"
     "push $8\n"
-    "push $8\n"
     "jmp interrupt_common\n"
 
 "invalid_tss_handler:\n"
-    "push $10\n"
     "push $10\n"
     "jmp interrupt_common\n"
 
 "segment_not_present_handler:\n"
     "push $11\n"
-    "push $11\n"
     "jmp interrupt_common\n"
 
 "stack_segment_fault_handler:\n"
-    "push $12\n"
     "push $12\n"
     "jmp interrupt_common\n"
 
 "general_protection_fault_handler:\n"
     "push $13\n"
-    "push $13\n"
     "jmp interrupt_common\n"
 
 "page_fault_handler:\n"
-    "push $14\n"
     "push $14\n"
     "jmp interrupt_common\n"
 
@@ -283,11 +274,10 @@ __asm__ (
 
 "alignment_check_handler:\n"
     "push $17\n"
-    "push $17\n"
     "jmp interrupt_common\n"
 
 "machine_check_handler:\n"
-    "push $18\n"
+    "push $0\n"
     "push $18\n"
     "jmp interrupt_common\n"
 
@@ -317,8 +307,8 @@ __asm__ (
     "mov %ax, %es\n"
     "mov %ax, %fs\n"
     "mov %ax, %gs\n"
-    "mov 8(%esp), %eax\n"
-    "mov 12(%esp), %edx\n"
+    "mov 48(%esp), %eax\n"  // interrupt_number
+    "mov 52(%esp), %edx\n"  // error_code
     "push %edx\n"
     "push %eax\n"
     "call interrupt_handler_common\n"

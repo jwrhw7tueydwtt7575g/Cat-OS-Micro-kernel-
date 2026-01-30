@@ -1,0 +1,36 @@
+PCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+CPU Exception 0x0000000E Error code: 0x00000002
+Page fault at address: 0x00501000
+KERNEL PANIC: 
+Unhandled CPU exception in kernel

@@ -16,7 +16,7 @@ static uint32_t memory_used_pages = 0;
 static uint32_t memory_total_pages = PAGE_COUNT;
 
 // Kernel page directory
-static uint32_t kernel_page_dir;
+uint32_t kernel_page_dir;
 
 // Forward declarations
 static void bitmap_set_bit(uint32_t page);
@@ -40,6 +40,15 @@ void memory_init(void) {
     
     // Create kernel page directory
     kernel_page_dir = memory_create_page_directory();
+    
+    // Reserve User Space Memory (0x400000 - 0x500000 for safety)
+    // This is where Stage 2 loaded init.bin
+    uint32_t user_start_page = 0x400000 / PAGE_SIZE;
+    uint32_t user_pages = 256; // Reserve 1MB for userspace binary area
+    for (uint32_t i = 0; i < user_pages; i++) {
+        bitmap_set_bit(user_start_page + i);
+        memory_used_pages++;
+    }
     
     // Map kernel space identity mapping
     for (uint32_t i = 0; i < kernel_pages; i++) {

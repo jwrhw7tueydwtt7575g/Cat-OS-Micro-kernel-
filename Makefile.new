@@ -1,0 +1,13 @@
+# Disk image
+$(DISK_IMAGE): $(BOOT_STAGE1) $(BOOT_STAGE2) $(BUILD_DIR)/kernel.bin $(USER_PROGRAMS) $(DRIVER_BINS)
+	@dd if=/dev/zero of=$@ bs=1024 count=1440 2>/dev/null
+	@dd if=$(BOOT_STAGE1) of=$@ bs=512 count=1 conv=notrunc 2>/dev/null
+	@dd if=$(BOOT_STAGE2) of=$@ bs=512 seek=1 conv=notrunc 2>/dev/null
+	@dd if=$(BUILD_DIR)/kernel.bin of=$@ bs=512 seek=10 conv=notrunc 2>/dev/null
+	@dd if=$(BUILD_DIR)/userspace/init.bin of=$@ bs=512 seek=74 conv=notrunc 2>/dev/null
+	@dd if=$(BUILD_DIR)/drivers/keyboard.bin of=$@ bs=512 seek=106 conv=notrunc 2>/dev/null
+	@dd if=$(BUILD_DIR)/drivers/console.bin of=$@ bs=512 seek=138 conv=notrunc 2>/dev/null
+	@dd if=$(BUILD_DIR)/drivers/timer.bin of=$@ bs=512 seek=170 conv=notrunc 2>/dev/null
+	@dd if=$(BUILD_DIR)/userspace/shell.bin of=$@ bs=512 seek=202 conv=notrunc 2>/dev/null
+	@dd if=$(BUILD_DIR)/userspace/monitor.bin of=$@ bs=512 seek=234 conv=notrunc 2>/dev/null
+	@echo "Disk image created: $@"

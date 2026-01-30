@@ -30,7 +30,7 @@ retry_read:
     mov ah, 0x02        ; Read sectors
     mov al, 8           ; Read 8 sectors (4KB)
     mov ch, 0           ; Cylinder 0
-    mov cl, 2           ; Sector 2 (after MBR)
+    mov cl, 2           ; Sector 2 (Stage 2 starts at LBA 1 -> Sector 2)
     mov dh, 0           ; Head 0
     mov dl, [boot_drive]
     int 0x13            ; BIOS disk interrupt

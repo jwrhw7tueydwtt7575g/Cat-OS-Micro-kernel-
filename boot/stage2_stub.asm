@@ -1,132 +1,201 @@
-; MiniSecureOS Stage 2 Entry Stub - 16-bit assembly
-; Switches to protected mode and calls C code
-
+; MiniSecureOS Stage 2 Bootloader - CORRECTED
 [BITS 16]
-; ORG will be handled by linker script
+[ORG 0]
 
-stage2_main:
-    ; Print message using BIOS
-    mov si, stage2_msg
-    call print_string
+LOAD_ADDR equ 0x10000
+
+start:
+    ; Setup segments
+    mov ax, 0x1000
+    mov ds, ax
     
-    ; Enable A20 line using fast method
+    ; Save boot drive (passed in DL from Stage 1)
+    mov [boot_drive], dl
+    
+    mov es, ax
+    mov ss, ax
+    mov sp, 0x9000
+    
+    ; Print message
+    mov si, msg1
+    call print
+    
+    ; Load Kernel into memory buffer (Real Mode)
+    ; We load it to 0x2000:0000 (physical 0x20000)
+    
+    mov si, msg_load_kernel
+    call print
+    
+    mov ax, 0x2000      ; Segment 0x2000
+    mov es, ax
+    xor bx, bx
+    
+    ; Read 512 sectors using single-sector reads (Slow but robust for Floppy)
+    mov cx, 512
+    mov bp, 10          ; Start LBA 10
+    
+read_loop:
+    push cx             ; Save loop count
+    
+    ; LBA to CHS
+    mov ax, bp
+    mov bl, 18
+    div bl              ; AH = (LBA % 18), AL = (LBA / 18)
+    
+    mov cl, ah
+    inc cl              ; Sector = (LBA % 18) + 1
+    
+    mov dh, al
+    and dh, 1           ; Head = (LBA / 18) % 2
+    
+    mov ch, al
+    shr ch, 1           ; Cylinder = (LBA / 18) / 2
+    
+    ; Read 1 sector
+    mov ax, 0x0201      ; AH=02, AL=1
+    mov dl, [boot_drive]
+    xor bx, bx
+    int 0x13
+    jc disk_error
+    
+    ; Update Segment
+    mov ax, es
+    add ax, 32          ; Add 512 bytes (32 paragraphs)
+    mov es, ax
+    
+    ; Next LBA
+    inc bp
+    
+    pop cx              ; Restore loop count
+    loop read_loop
+    
+    mov si, msg_kernel_loaded
+    call print
+    
+    ; Enable A20
     in al, 0x92
-    or al, 0x02
+    or al, 2
     out 0x92, al
     
-    mov si, a20_msg
-    call print_string
+    mov si, msg2
+    call print
     
     ; Load GDT
     lgdt [gdt_ptr]
     
-    mov si, gdt_msg
-    call print_string
+    mov si, msg3
+    call print
     
-    ; Enable protected mode
+    ; Enter protected mode
+    cli
     mov eax, cr0
     or eax, 1
     mov cr0, eax
-    
-    ; Far jump to protected mode entry point
-    jmp CODE_SEL:protected_mode_entry
 
+    ; Far jump to protected-mode entry using trampoline selector 0x18
+    ; Selector 0x18 has Base 0x10000, Limit 4GB, 32-bit.
+    ; pm_entry is an offset relative to ORG 0 (start of file).
+    ; Since we are at 0x10000 physical, 0x18:pm_entry will jump to 0x10000 + pm_entry.
+    jmp 0x18:pm_entry
+
+; CRITICAL: [BITS 32] must come BEFORE the label
 [BITS 32]
-protected_mode_entry:
-    ; Setup segment registers
-    mov ax, DATA_SEL
+pm_entry:
+    ; We are now in 32-bit mode, but CS base is 0x10000 (Selector 0x18).
+    ; We need to switch to Selector 0x08 (Base 0).
+    ; We must jump to linear address (LOAD_ADDR + .pm_flat).
+    jmp 0x08:(LOAD_ADDR + .pm_flat)
+.pm_flat:
+    ; Now CS is 0x08 (Base 0), EIP is correctly pointing to code.
+
+    ; Debug: Output 'P' to serial
+    mov dx, 0x3F8
+    mov al, 'P'
+    out dx, al
+
+    ; Setup segments (now assembles as 32-bit)
+    mov ax, 0x10
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
+    ; Load SS and setup protected-mode stack
     mov ss, ax
-    
-    ; Setup stack
     mov esp, 0x90000
+    mov ebp, esp
     
-    ; VERY VISIBLE TEST - Fill screen with green from assembly
+    ; Write 'PM' to VGA
     mov edi, 0xB8000
-    mov eax, 0x20002020  ; Green background, space
-    mov ecx, 80 * 25
-    cld
-    rep stosd
+    mov dword [edi], 0x0F500F4D
     
-    ; Print success message in protected mode
-    mov ebx, protected_msg
-    call print_string_vga
+    ; Call C code
+    ; Call the C entry point which is located at LOAD_ADDR + 0x200
+    mov eax, LOAD_ADDR + 0x200
+    call eax
     
-    ; Print message before calling C code
-    mov ebx, calling_c_msg
-    call print_string_vga
-    
-    ; Call the actual C code (compiled as 32-bit) at offset 0x2000
-    call 0x2000
-    
-    ; Should never reach here
+    ; If C code returns, hang
     cli
     hlt
-    jmp $
 
-; Print string (BIOS - 16-bit)
-print_string:
+disk_error:
+    mov si, msg_disk_error
+    call print
+    cli
+    hlt
+    
+    ; Hang
+    cli
+.hang:
+    hlt
+    jmp .hang
+
+[BITS 16]
+print:
     lodsb
-    cmp al, 0
-    je print_done
+    test al, al
+    jz .done
     mov ah, 0x0E
     int 0x10
-    jmp print_string
-print_done:
+    jmp print
+.done:
     ret
 
-; Print string (VGA - 32-bit)
-print_string_vga:
-    mov edi, 0xB8000 + 160 * 3  ; Line 3
-    mov ah, 0x0F  ; White on black
-    
-.print_loop:
-    mov al, [ebx]
-    cmp al, 0
-    je .print_done
-    stosw
-    inc ebx
-    jmp .print_loop
-.print_done:
-    ret
+msg1 db 'Stage2', 13, 10, 0
+msg2 db 'A20', 13, 10, 0
+msg3 db 'PM', 13, 10, 0
+msg_load_kernel db 'Load K', 13, 10, 0
+msg_kernel_loaded db 'K OK', 13, 10, 0
+msg_disk_error db 'DiskErr', 13, 10, 0
+boot_drive db 0
 
-; GDT
+
+align 8
 gdt:
-    dd 0  ; Null descriptor
-    dd 0
+    dq 0                ; NULL descriptor
+    dw 0xFFFF, 0x0000   ; 0x08 Code: limit low, base low (Flat 4GB)
+    db 0x00, 0x9A, 0xCF, 0x00  ; Code: base mid, access, granularity, base high
+    dw 0xFFFF, 0x0000   ; 0x10 Data: limit low, base low (Flat 4GB)
+    db 0x00, 0x92, 0xCF, 0x00  ; Data: base mid, access, granularity, base high
     
-    ; Code segment (32-bit)
-    dw 0xFFFF     ; Limit
-    dw 0x0000     ; Base
-    db 0x00       ; Base
-    db 0x9A       ; Access
-    db 0xCF       ; Granularity
-    db 0x00       ; Base
-    
-    ; Data segment (32-bit)
-    dw 0xFFFF     ; Limit
-    dw 0x0000     ; Base
-    db 0x00       ; Base
-    db 0x92       ; Access
-    db 0xCF       ; Granularity
-    db 0x00       ; Base
+    ; Trampoline descriptor 0x18
+    dw 0xFFFF, 0x0000   ; Limit low, Base low (0x0000)
+    db 0x01, 0x9A, 0xCF, 0x00  ; Base mid (0x01 = 0x10000 >> 16), Access, Granularity, Base high
+    ; Base = 0x010000 = 0x10000. Limit = 0xFFFFF * 4KB = 4GB.
+
+gdt_end:
 
 gdt_ptr:
-    dw gdt_ptr - gdt - 1
-    dd gdt
+    dw gdt_end - gdt - 1
+    dd LOAD_ADDR + gdt
 
-CODE_SEL equ 0x08
-DATA_SEL equ 0x10
+; Minimal IDT (all zeros) and pointer
+align 4
+idt:
+    times 8 db 0
+idt_end:
 
-; Messages
-stage2_msg db 'MiniSecureOS Stage 2 Entry Stub', 13, 10, 0
-a20_msg db 'A20 line enabled', 13, 10, 0
-gdt_msg db 'GDT loaded, entering protected mode...', 13, 10, 0
-protected_msg db 'Protected mode entered, calling C code...', 0
-calling_c_msg db 'About to call C code at 0x2000...', 0
+idt_ptr:
+    dw idt_end - idt - 1
+    dd LOAD_ADDR + idt
 
-; Pad to fill sector
 times 512-($-$$) db 0
