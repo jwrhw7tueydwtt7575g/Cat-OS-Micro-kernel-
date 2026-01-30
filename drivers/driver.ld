@@ -4,10 +4,11 @@ ENTRY(main)
 
 SECTIONS
 {
-    . = 0x00800000;  /* Load at 8MB */
+    . = 0x00400000;  /* Standard user-space base at 4MB */
     
     .text :
     {
+        KEEP(*(.text.entry))
         *(.text)
         *(.rodata*)
         . = ALIGN(4096);

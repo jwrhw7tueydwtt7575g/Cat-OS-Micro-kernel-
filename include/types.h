@@ -46,7 +46,8 @@ typedef enum {
     STATUS_PERMISSION_DENIED = -4,
     STATUS_NOT_FOUND = -5,
     STATUS_TIMEOUT = -6,
-    STATUS_ALREADY_EXISTS = -7
+    STATUS_ALREADY_EXISTS = -7,
+    STATUS_NOT_IMPLEMENTED = -8
 } status_t;
 
 // Process states

@@ -31,7 +31,9 @@ void stage2_c_main(void) {
     // Copy Userspace Init + Drivers from 0x28000 (0x20000 + 32KB) to 0x400000 (4MB)
     // We loaded ~255 sectors in stub, but let's copy a generous amount to 4MB region
     vga_print_debug("Copying userspace...", 3);
+    memset((void*)0x400000, 0, 1024 * 1024); // Zero 1MB first
     memcpy((void*)0x400000, (void*)(0x20000 + (64 * 512)), 512 * 512); // Copy 512 sectors (256KB)
+    
     
     // Verify kernel was loaded
     uint32_t* kernel_ptr = (uint32_t*)0x100000;

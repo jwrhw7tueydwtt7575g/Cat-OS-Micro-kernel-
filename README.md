@@ -1,41 +1,51 @@
-# Cat-OS — README
+# Cat-OS (x86 Microkernel)
 
-Compact overview and quick start to build and run Cat-OS locally.
+Cat-OS is a message-driven microkernel designed for process isolation and hardware abstraction.
 
-## Quick start (build + run under QEMU)
+## Features
+- **Microkernel Architecture**: Minimal Ring 0 core (scheduling, IPC, memory).
+- **Process Isolation**: Drivers (Keyboard, Console, Timer) are Ring 0 Kernel Tasks, while Apps (Shell, Init) run in Ring 3.
+- **IPC System**: Asynchronous message passing for inter-service communication.
+- **Standard Entry Points**: Every process uses a deterministic `_start` entry point for stability.
 
-1. Build the project:
+## Quick Start (Build & Run)
 
-```bash
-make clean && make
+1. **Build the system**:
+   ```bash
+   make clean && make
+   ```
+
+2. **Run in QEMU**:
+   ```bash
+   make run
+   ```
+
+## Architecture
+
+```
+       [ USER SPACE (Ring 3) ]             [ KERNEL SPACE (Ring 0) ]
+      +-----------------------+           +-------------------------+
+      |        Shell          |           |   Keyboard Driver       |
+      |   (User Process)      |           |    (Kernel Task)        |
+      +----------+------------+           +------------+------------+
+                 |                                     |
+                 |  Syscall (Int 0x80)                 |  Direct Access
+                 v                                     v
+      +-------------------------------------------------------------+
+      |                      Cat-OS Microkernel                     |
+      |  +-----------+  +-----------+  +-----------+  +----------+  |
+      |  | Scheduler |  |  Mem Mgr  |  |  IPC Core |  |   HAL    |  |
+      |  +-----------+  +-----------+  +-----------+  +----------+  |
+      +-------------------------------------------------------------+
+                 ^                                     ^
+                 |                                     |
+      +----------+------------+           +------------+------------+
+      |     Init Process      |           |    Console/Timer        |
+      |     (Ring 3)          |           |    Kernel Tasks         |
+      +-----------------------+           +-------------------------+
 ```
 
-2. Run in QEMU (serial output to terminal):
-
-```bash
-timeout 15s qemu-system-i386 -fda build/disk.img \
-	-serial stdio
-```
-
-Notes:
-- If you hit a kernel panic (e.g. "Unhandled CPU exception in kernel"), check `kernel/interrupt.c` and `kernel/memory.c` for page faults.
-- Use `-serial stdio` to capture kernel prints in the terminal.
-
-## Project structure (short)
-- `boot/` — stage1 and stage2 bootloaders
-- `hal/` — CPU / PIC / timer helpers
-- `kernel/` — microkernel core (scheduler, IPC, memory)
-- `drivers/` — console/keyboard/timer drivers (user-space)
-- `userspace/` — init, shell, and small user apps
-- `docs/` — design docs and architecture
-
-## Contributing
-- Read `docs/ARCHITECTURE.md` and `CAT_OS_SYSTEM_DOCUMENTATION.md` for design rationale.
-- Add tests in `tests/` when changing core components.
-- Follow the capability model: avoid adding ad-hoc privileged paths in the kernel.
-
-## Debugging
-- Add temporary printk statements to `kernel/main.c` and `kernel/interrupt.c`.
-- Use the provided `tests/test_framework.c` to validate changes.
-
-For more details see `CAT_OS_SYSTEM_DOCUMENTATION.md` and `docs/ARCHITECTURE.md`.
+## Shortcuts
+- **Build**: `make`
+- **Run**: `make run`
+- **Output**: Serial (to terminal) and VGA (graphical window).

@@ -23,6 +23,7 @@ typedef struct pcb {
     struct pcb* next;          // Next process in queue
     struct pcb* prev;          // Previous process in queue
     uint32_t registers[16];    // Saved registers
+    bool is_user;              // Whether this is a user-space process
 } pcb_t;
 
 // Message structure for IPC
@@ -94,6 +95,8 @@ uint32_t memory_create_page_directory(void);
 void memory_destroy_page_directory(uint32_t page_dir);
 void memory_map_page(uint32_t page_dir, uint32_t virt_addr, uint32_t phys_addr, uint32_t flags);
 void memory_unmap_page(uint32_t page_dir, uint32_t virt_addr);
+void memory_map_kernel(uint32_t page_dir);
+extern uint32_t kernel_page_dir;
 
 // IPC functions
 void ipc_init(void);
@@ -105,7 +108,7 @@ status_t ipc_broadcast(uint32_t msg_type, ipc_abi_message_t* msg);
 
 // System call functions
 void syscall_init(void);
-void syscall_handler(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx);
+uint32_t syscall_handler(uint32_t eax, uint32_t ebx, uint32_t ecx, uint32_t edx);
 
 // Capability functions
 void capability_init(void);
@@ -115,6 +118,7 @@ void capability_destroy(capability_t* cap);
 
 // Process management functions
 pcb_t* process_create(uint32_t parent_pid);
+pcb_t* process_create_kernel(void);
 void process_exit(pcb_t* process, uint32_t exit_code);
 status_t process_kill(uint32_t pid);
 pcb_t* process_find(uint32_t pid);
@@ -140,9 +144,9 @@ void scheduler_set_priority(pcb_t* process, uint32_t priority);
 
 // Interrupt handling
 void interrupt_init(void);
-void interrupt_handler(uint32_t interrupt_number);
 void timer_interrupt_handler(void);
 void keyboard_interrupt_handler(void);
+void syscall_dispatch(void* frame);
 
 // Debug functions
 void kernel_panic(const char* message);

@@ -1,53 +1,34 @@
-# Architecture — Cat-OS
+# Cat-OS Architecture
 
-This file contains a technical deep-dive for implementers: architecture diagrams, component responsibilities, memory layout, interrupt model, and developer guidance.
+## Core Design
+Cat-OS follows a hybrid microkernel approach where core services are split by privilege level (Ring) for stability and performance.
 
-## High-level model
+### 1. Privilege Separation
+- **Ring 0 (Kernel Tasks)**: Device drivers (Keyboard, Console, Timer) run in Ring 0. This allows them to execute privileged instructions (like `inb`/`outb`) without the overhead of syscall-based port access.
+- **Ring 3 (User Processes)**: Programs like `Init` and `Shell` run in Ring 3. They are isolated from hardware and must use System Calls (`int 0x80`) to interact with the kernel.
 
-Cat-OS is a message-driven microkernel. The kernel provides scheduling, memory management, inter-process communication (IPC) and syscalls. Drivers and higher-level services run in user-space and communicate through well-defined IPC messages. A capability manager enforces fine-grained permissions.
+### 2. Context Switching
+The scheduler uses a robust assembly-based context switch residing in `kernel/scheduler.c`:
+- **State Preservation**: Saves/restores `EFLAGS`, `EBP`, `EBX`, `ESI`, and `EDI`.
+- **Address Space**: Automatically switches `CR3` (Page Directory) on every task switch.
+- **Interrupt Safety**: Updates `TSS.esp0` to ensure user-space interrupts have a valid kernel stack to land on.
 
-### Layers (concise)
-- Hardware (CPU, PIC, PIT, Keyboard, VGA)
-- HAL: hardware helpers used by kernel
-- Microkernel: Scheduler, Memory Manager, IPC, Syscall dispatcher, Capability manager
-- User-space: init, drivers, shell, apps
+### 3. Inter-Process Communication (IPC)
+The IPC system facilitates communication between user processes and kernel tasks:
+- **Send/Receive**: Processes can send messages to a target PID or wait for incoming messages.
+- **Message Format**: Standardized `ipc_abi_message_t` ensures compatibility across the system.
 
-## Reference Diagram (ASCII + Mermaid already in main doc)
+## System Components
 
-Refer to the diagrams in the root documentation (`CAT_OS_SYSTEM_DOCUMENTATION.md`) for both Mermaid and ASCII views. The architecture in this file focuses on implementation notes and responsibilities for each component.
+| Component | Responsibility | Privilege |
+|-----------|----------------|-----------|
+| **Scheduler** | Round-robin multitasking, CR3/TSS switching | Ring 0 |
+| **MMU** | Page allocation, per-process page tables | Ring 0 |
+| **IPC** | Message passing and process unblocking | Ring 0 |
+| **Drivers** | Hardware interaction (Keyboard, VGA, Timer) | Ring 0 |
+| **Shell/Init** | User interface and service management | Ring 3 |
 
-## Component Responsibilities
-
-- Scheduler (`kernel/scheduler.c`)
-	- Round-robin queue; time-slice handled by PIT interrupts.
-	- Save/restore CPU registers (see `kernel/entry.asm` for context layout).
-- Memory Manager (`kernel/memory.c`)
-	- Physical page allocator (bitmap), page table creation and per-process address spaces.
-	- Early identity mapping traces during boot; ensure kernel pages are mapped before enabling interrupts.
-- IPC Core (`kernel/ipc.c`)
-	- Message envelope format and queueing.
-	- Blocking `receive` moves process to BLOCKED; `send` wakes receiver.
-- Syscall Dispatcher (`kernel/syscall.c`)
-	- Validates user pointers, capability tokens, and dispatches to kernel services.
-- Capability Manager (`kernel/capability.c`)
-	- Issue, validate and revoke capabilities. Keep capability metadata small and immutable when possible.
-
-## Memory & Interrupts (quick)
-- Kernel virtual region: 0xC0000000+ (reserved for kernel mappings)
-- User space: below 0xC0000000
-- Interrupt vectors: hardware vectors remapped through PIC; IDT entries initialized early in `kernel/main.c`.
-
-## Implementation notes and pitfalls
-- Ensure your early boot mapping includes the pages used by the stack and by the interrupt handlers.
-- Page faults during boot commonly stem from missing page-table entries or incorrect permissions.
-- IPC message copies should validate user addresses early to avoid kernel crashes.
-
-## Development guidance
-- Add unit tests for `kernel/memory.c` and `kernel/ipc.c` using `tests/test_framework.c`.
-- Document message layouts in a single header to keep IPC stable across refactors.
-
-## Scaling considerations
-- Introduce a service registry for locating drivers by name rather than PID.
-- Provide versioned IPC messages and a small compatibility layer.
-
-For contributor onboarding and diagrams, see `CAT_OS_SYSTEM_DOCUMENTATION.md`.
+## Memory Layout
+- **0x00100000 (1MB)**: Kernel Binary (linked via `kernel.ld`)
+- **0x00400000 (4MB)**: Common Virtual Base for all User/Driver binaries.
+- Per-process stacks are allocated dynamically in high memory.

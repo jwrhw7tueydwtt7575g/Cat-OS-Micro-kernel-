@@ -2,28 +2,9 @@
 // Manages driver registration and communication
 
 #include "driver.h"
-#include "kernel.h"
-#include "hal.h"
-#include <stddef.h>
+#include "userspace.h"
 
-// Constants
 #define MAX_DRIVERS 16
-
-// Simple string functions
-static int strcmp(const char* str1, const char* str2) {
-    while (*str1 && (*str1 == *str2)) {
-        str1++;
-        str2++;
-    }
-    return *str1 - *str2;
-}
-
-// Stub for ipc_send (drivers can't directly call kernel IPC)
-static status_t ipc_send_stub(uint32_t receiver_pid, ipc_abi_message_t* msg) {
-    (void)receiver_pid;
-    (void)msg;
-    return STATUS_SUCCESS;  // Stub implementation
-}
 
 // Registered drivers
 static driver_interface_t* registered_drivers[MAX_DRIVERS];
@@ -107,7 +88,7 @@ status_t driver_send_message(uint32_t driver_id, ipc_abi_message_t* msg) {
     }
     
     // Send message to driver process
-    return ipc_send_stub(driver_id, msg);
+    return ipc_send(driver_id, msg);
 }
 
 // Broadcast message to all drivers
@@ -120,7 +101,7 @@ status_t driver_broadcast_message(ipc_abi_message_t* msg) {
     
     for (int i = 0; i < MAX_DRIVERS; i++) {
         if (registered_drivers[i]) {
-            if (ipc_send_stub(registered_drivers[i]->driver_id, msg) == STATUS_SUCCESS) {
+            if (ipc_send(registered_drivers[i]->driver_id, msg) == STATUS_SUCCESS) {
                 sent_count++;
             }
         }

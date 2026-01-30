@@ -14,6 +14,13 @@ static void display_memory_info(void);
 static void display_driver_info(void);
 static void display_performance_stats(void);
 
+int main(void);
+void _start(void) __attribute__((section(".text.entry")));
+void _start(void) {
+    main();
+    while(1) { process_yield(); }
+}
+
 // Monitor main function
 int main(void) {
     print("MiniSecureOS System Monitor v1.0\r\n");

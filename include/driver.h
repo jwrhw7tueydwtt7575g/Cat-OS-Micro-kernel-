@@ -45,18 +45,17 @@ status_t driver_send_response(uint32_t sender_pid, ipc_abi_message_t* original_m
 // Driver utilities
 void driver_print(const char* str);
 void driver_print_hex(uint32_t value);
-uint32_t driver_get_ticks(void);
 
 // Keyboard driver
 status_t keyboard_driver_init(void);
-void keyboard_driver_shutdown(void);
+status_t keyboard_driver_shutdown(void);
 
 // Console driver
 status_t console_driver_init(void);
-void console_driver_shutdown(void);
+status_t console_driver_shutdown(void);
 
 // Timer driver
 status_t timer_driver_init(void);
-void timer_driver_shutdown(void);
+status_t timer_driver_shutdown(void);
 
 #endif // DRIVER_H

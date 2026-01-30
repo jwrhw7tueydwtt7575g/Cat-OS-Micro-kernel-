@@ -75,7 +75,8 @@ HAL_OBJS = \
 	$(BUILD_DIR)/hal/cpu.o \
 	$(BUILD_DIR)/hal/io.o \
 	$(BUILD_DIR)/hal/timer.o \
-	$(BUILD_DIR)/hal/pic.o
+	$(BUILD_DIR)/hal/pic.o \
+	$(BUILD_DIR)/hal/gdt.o
 
 $(KERNEL_ELF): $(KERNEL_OBJS) $(HAL_OBJS) $(KERNEL_DIR)/kernel.ld
 	$(LD) $(LDFLAGS) -T $(KERNEL_DIR)/kernel.ld -o $@ $(KERNEL_OBJS) $(HAL_OBJS)
@@ -103,26 +104,27 @@ $(BUILD_DIR)/userspace/%.o: $(USER_DIR)/%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(BUILD_DIR)/userspace/init.bin: $(BUILD_DIR)/userspace/init.o $(BUILD_DIR)/userspace/userspace.o
-	$(LD) $(LDFLAGS) -T $(USER_DIR)/user.ld -o $@ $^
+	$(LD) $(LDFLAGS) --oformat binary -T $(USER_DIR)/user.ld -o $@ $^
 
 $(BUILD_DIR)/userspace/shell.bin: $(BUILD_DIR)/userspace/shell.o $(BUILD_DIR)/userspace/userspace.o
-	$(LD) $(LDFLAGS) -T $(USER_DIR)/user.ld -o $@ $(BUILD_DIR)/userspace/shell.o $(BUILD_DIR)/userspace/userspace.o
+	$(LD) $(LDFLAGS) --oformat binary -T $(USER_DIR)/user.ld -o $@ $(BUILD_DIR)/userspace/shell.o $(BUILD_DIR)/userspace/userspace.o
 
 $(BUILD_DIR)/userspace/monitor.bin: $(BUILD_DIR)/userspace/monitor.o $(BUILD_DIR)/userspace/userspace.o
-	$(LD) $(LDFLAGS) -T $(USER_DIR)/user.ld -o $@ $(BUILD_DIR)/userspace/monitor.o $(BUILD_DIR)/userspace/userspace.o
+	$(LD) $(LDFLAGS) --oformat binary -T $(USER_DIR)/user.ld -o $@ $(BUILD_DIR)/userspace/monitor.o $(BUILD_DIR)/userspace/userspace.o
 
 # Drivers
 $(BUILD_DIR)/drivers/%.o: $(DRIVER_DIR)/%.c
 	@mkdir -p $(BUILD_DIR)/drivers
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(BUILD_DIR)/drivers/keyboard.bin: $(BUILD_DIR)/drivers/keyboard.o $(BUILD_DIR)/drivers/driver_manager.o
+
+$(BUILD_DIR)/drivers/keyboard.bin: $(BUILD_DIR)/drivers/keyboard.o $(BUILD_DIR)/drivers/driver_manager.o $(BUILD_DIR)/userspace/userspace.o
 	$(LD) $(LDFLAGS) -T $(DRIVER_DIR)/driver.ld -o $@ $^
 
-$(BUILD_DIR)/drivers/console.bin: $(BUILD_DIR)/drivers/console.o $(BUILD_DIR)/drivers/driver_manager.o
+$(BUILD_DIR)/drivers/console.bin: $(BUILD_DIR)/drivers/console.o $(BUILD_DIR)/drivers/driver_manager.o $(BUILD_DIR)/userspace/userspace.o
 	$(LD) $(LDFLAGS) -T $(DRIVER_DIR)/driver.ld -o $@ $^
 
-$(BUILD_DIR)/drivers/timer.bin: $(BUILD_DIR)/drivers/timer.o $(BUILD_DIR)/drivers/driver_manager.o
+$(BUILD_DIR)/drivers/timer.bin: $(BUILD_DIR)/drivers/timer.o $(BUILD_DIR)/drivers/driver_manager.o $(BUILD_DIR)/userspace/userspace.o
 	$(LD) $(LDFLAGS) -T $(DRIVER_DIR)/driver.ld -o $@ $^
 
 $(BUILD_DIR)/drivers/driver_manager.o: $(DRIVER_DIR)/driver_manager.c
@@ -143,7 +145,7 @@ $(DISK_IMAGE): $(BOOT_STAGE1) $(BOOT_STAGE2) $(BUILD_DIR)/kernel.bin $(USER_PROG
 
 # Run in QEMU
 run: $(DISK_IMAGE)
-	qemu-system-i386 -fda $< -monitor stdio
+	qemu-system-i386 -fda $< -nographic -serial mon:stdio -no-reboot
 
 # Clean
 clean:

@@ -12,9 +12,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -28,9 +71,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -44,9 +130,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -60,9 +189,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -76,9 +248,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -92,9 +307,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -108,9 +366,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -124,9 +425,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -140,9 +484,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -156,9 +543,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -172,9 +602,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -188,9 +661,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -204,9 +720,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -220,9 +779,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -236,9 +838,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -252,9 +897,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -268,9 +956,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -284,9 +1015,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -300,9 +1074,52 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...
+c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
 
 
 iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
@@ -316,550 +1133,48 @@ Booting from Floppy...
 MiniSecureOS Stage 1 Bootloader
 Stage 2 loaded successfully
 B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..c[?7l[2J[0mSeaBIOS (version 1.16.3-debian-1.16.3-2)
-
-
-iPXE (https://ipxe.org) 00:03.0 CA00 PCI2.10 PnP PMM+06FCAF60+06F0AF60 CA00
-Press Ctrl-B to configure iPXE (PCI 00:03.0)...                                                                               
-
-
-Booting from Hard Disk...
-Boot failed: could not read the boot disk
-
-Booting from Floppy...
-MiniSecureOS Stage 1 Bootloader
-Stage 2 loaded successfully
-B8 00 10 8E
-MiniSecureOS Stage 2 Entry Stub
-A20 line enabled
-GDT loaded, entering protected mode..qemu-system-i386: terminating on signal 15 from pid 10698 (timeout)
+Stage2
+Load K
+K OK
+A20
+PPCStage 2 C Code Running
+Copying kernel...
+Copying userspace...
+Kernel copied successfully
+Jumping to kernel...
+Cat-OS Microkernel v1.0
+========================
+Initializing kernel...
+BSS cleared
+CPU initialized
+I/O initialized
+PIC initialized
+Memory manager initialized
+Total memory: 0x01000000 bytes
+Memory manager initialized
+Scheduler initialized
+Scheduler initialized
+Process management initialized
+Process management initialized
+IPC system initialized
+IPC initialized
+Capability system initialized
+Capability system initialized
+System call system initialized
+System calls initialized
+Interrupt system initialized
+Interrupts initialized
+Timer enabled
+Kernel initialization complete!
+Cat-OS Microkernel is RUNNING!
+Starting system services...
+Starting Init Process (PID 1)...
+Process created with PID 0x00000001
+Process added to scheduler, PID: 0x00000001
+Starting Keyboard Driver (PID 2)...
+Process created with PID 0x00000002
+Process added to scheduler, PID: 0x00000002
+Starting Console Driver (PID 3)...
+Process created with PID 0x00000003
+Process added to scheduler, PID: 0x00000003
+Starting Timer Driver (PID 4)...

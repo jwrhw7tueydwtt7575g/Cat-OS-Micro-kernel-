@@ -1,6 +1,6 @@
 /* User Program Linker Script */
 
-ENTRY(main)
+ENTRY(_start)
 
 SECTIONS
 {
@@ -8,6 +8,7 @@ SECTIONS
     
     .text :
     {
+        KEEP(*(.text.entry))
         *(.text)
         *(.rodata*)
         . = ALIGN(4096);

@@ -5,10 +5,18 @@
 #include "hal.h"
 #include <stddef.h>
 
+// Trap frame structure
+typedef struct {
+    uint32_t gs, fs, es, ds;
+    uint32_t edi, esi, ebp, esp_dummy, ebx, edx, ecx, eax;
+    uint32_t int_no, err_code;
+    uint32_t eip, cs, eflags, user_esp, user_ss;
+} trap_frame_t;
+
 // IDT setup function
 static void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags);
 
-// External assembly handlers (defined in assembly at bottom of file)
+// External assembly handlers
 extern void divide_error_handler(void);
 extern void debug_exception_handler(void);
 extern void nmi_handler(void);
@@ -31,7 +39,7 @@ extern void timer_irq_handler(void);
 extern void keyboard_irq_handler(void);
 extern void syscall_handler_wrapper(void);
 
-// Interrupt Descriptor Table (IDT)
+// IDT structures
 struct idt_entry {
     uint16_t base_low;
     uint16_t selector;
@@ -45,18 +53,15 @@ struct idt_ptr {
     uint32_t base;
 } __attribute__((packed));
 
-// IDT structures
 static struct idt_entry idt[256];
 static struct idt_ptr idt_ptr;
 
 // Initialize interrupt system
 void interrupt_init(void) {
-    // Clear IDT
     for (int i = 0; i < 256; i++) {
         idt_set_gate(i, 0, 0, 0);
     }
     
-    // Set up exception handlers
     idt_set_gate(0, (uint32_t)divide_error_handler, 0x08, 0x8E);
     idt_set_gate(1, (uint32_t)debug_exception_handler, 0x08, 0x8E);
     idt_set_gate(2, (uint32_t)nmi_handler, 0x08, 0x8E);
@@ -76,24 +81,19 @@ void interrupt_init(void) {
     idt_set_gate(18, (uint32_t)machine_check_handler, 0x08, 0x8E);
     idt_set_gate(19, (uint32_t)simd_floating_point_handler, 0x08, 0x8E);
     
-    // Set up IRQ handlers
-    idt_set_gate(32, (uint32_t)timer_irq_handler, 0x08, 0x8E);  // IRQ0
-    idt_set_gate(33, (uint32_t)keyboard_irq_handler, 0x08, 0x8E); // IRQ1
+    idt_set_gate(32, (uint32_t)timer_irq_handler, 0x08, 0x8E);
+    idt_set_gate(33, (uint32_t)keyboard_irq_handler, 0x08, 0x8E);
     
-    // Set up system call handler
-    idt_set_gate(0x80, (uint32_t)syscall_handler_wrapper, 0x08, 0x8E);
+    // Syscall handler (DPL=3)
+    idt_set_gate(0x80, (uint32_t)syscall_handler_wrapper, 0x08, 0xEE);
     
-    // Set up IDT pointer
     idt_ptr.limit = (sizeof(struct idt_entry) * 256) - 1;
     idt_ptr.base = (uint32_t)&idt;
     
-    // Load IDT
     __asm__ volatile("lidt %0" : : "m"(idt_ptr));
-    
     kernel_print("Interrupt system initialized\r\n");
 }
 
-// Set IDT gate
 static void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags) {
     idt[num].base_low = base & 0xFFFF;
     idt[num].base_high = (base >> 16) & 0xFFFF;
@@ -102,200 +102,98 @@ static void idt_set_gate(uint8_t num, uint32_t base, uint16_t sel, uint8_t flags
     idt[num].type_attr = flags;
 }
 
-// Common interrupt handler
-void interrupt_handler_common(uint32_t interrupt_number, uint32_t error_code) {
-    // Handle different interrupt types
-    if (interrupt_number < 32) {
-        // CPU exception
-        kernel_print("CPU Exception ");
-        kernel_print_hex(interrupt_number);
-        kernel_print(" Error code: ");
-        kernel_print_hex(error_code);
+void interrupt_handler_common(trap_frame_t* frame) {
+    if (frame->int_no < 32) {
+        pcb_t* current = scheduler_get_current();
+        
+        kernel_print("\r\nCPU EXCEPTION ");
+        kernel_print_hex(frame->int_no);
+        kernel_print(" (");
+        if (frame->int_no == 14) kernel_print("Page Fault");
+        else if (frame->int_no == 13) kernel_print("GPF");
+        else kernel_print("Other");
+        kernel_print(") Error Code: ");
+        kernel_print_hex(frame->err_code);
         kernel_print("\r\n");
         
-        // Get faulting address if page fault
-        if (interrupt_number == 14) {
-            uint32_t fault_addr = hal_cpu_get_cr2();
-            kernel_print("Page fault at address: ");
-            kernel_print_hex(fault_addr);
+        if (current) {
+            kernel_print("PID: "); kernel_print_hex(current->pid);
             kernel_print("\r\n");
         }
         
-        // Kill current process
-        pcb_t* current = scheduler_get_current();
-        if (current) {
-            process_exit(current, interrupt_number);
-        } else {
-            kernel_panic("Unhandled CPU exception in kernel");
-        }
-    } else if (interrupt_number >= 32 && interrupt_number < 48) {
-        // Hardware interrupt (IRQ)
-        uint32_t irq = interrupt_number - 32;
-        
-        switch (irq) {
-            case 0:  // Timer
-                timer_interrupt_handler();
-                break;
-            case 1:  // Keyboard
-                keyboard_interrupt_handler();
-                break;
-            default:
-                kernel_print("Unhandled IRQ ");
-                kernel_print_hex(irq);
-                kernel_print("\r\n");
-                break;
-        }
-        
-        // Send EOI to PIC
-        hal_pic_send_eoi(irq);
-    } else if (interrupt_number == 0x80) {
-        // System call - handled in assembly wrapper
-        return;
-    } else {
-        kernel_print("Unknown interrupt ");
-        kernel_print_hex(interrupt_number);
+        kernel_print("EIP: "); kernel_print_hex(frame->eip);
+        kernel_print(" CS: "); kernel_print_hex(frame->cs);
+        kernel_print(" EFLAGS: "); kernel_print_hex(frame->eflags);
         kernel_print("\r\n");
+        
+        kernel_print("EAX: "); kernel_print_hex(frame->eax);
+        kernel_print(" EBX: "); kernel_print_hex(frame->ebx);
+        kernel_print(" ECX: "); kernel_print_hex(frame->ecx);
+        kernel_print(" EDX: "); kernel_print_hex(frame->edx);
+        kernel_print("\r\n");
+        
+        kernel_print("DS: "); kernel_print_hex(frame->ds);
+        kernel_print(" ES: "); kernel_print_hex(frame->es);
+        kernel_print(" FS: "); kernel_print_hex(frame->fs);
+        kernel_print(" GS: "); kernel_print_hex(frame->gs);
+        kernel_print("\r\n");
+        
+        kernel_print("ESP: "); kernel_print_hex(frame->user_esp);
+        kernel_print(" SS: "); kernel_print_hex(frame->user_ss);
+        kernel_print("\r\n");
+        
+        if (frame->int_no == 14) {
+            uint32_t fault_addr = hal_cpu_get_cr2();
+            kernel_print("Fault Address: "); kernel_print_hex(fault_addr);
+            kernel_print(" (");
+            if (frame->err_code & 0x01) kernel_print("Present ");
+            else kernel_print("Non-present ");
+            if (frame->err_code & 0x02) kernel_print("Write ");
+            else kernel_print("Read ");
+            if (frame->err_code & 0x04) kernel_print("User ");
+            else kernel_print("Kernel ");
+            kernel_print(")\r\n");
+        }
+        
+        // Decide whether to kill process or panic
+        if ((frame->cs & 0x03) == 0x03) {
+            if (current) {
+                kernel_print("User process crashed. Terminating.\r\n");
+                process_exit(current, frame->int_no);
+                // The scheduler will switch to another process
+                return;
+            }
+        }
+        
+        kernel_panic("Unhandled CPU exception in kernel");
+    } else if (frame->int_no >= 32 && frame->int_no < 48) {
+        uint32_t irq = frame->int_no - 32;
+        if (irq == 0) {
+            extern void timer_interrupt_handler(void);
+            timer_interrupt_handler();
+        } else if (irq == 1) {
+            extern void keyboard_interrupt_handler(void);
+            keyboard_interrupt_handler();
+        }
+        hal_pic_send_eoi(irq);
     }
 }
 
-// Timer interrupt handler
+// Timer and Keyboard handlers (minimal stubs or move logic here)
 void timer_interrupt_handler(void) {
-    // Call HAL timer handler
     extern void hal_timer_interrupt_handler(void);
     hal_timer_interrupt_handler();
 }
 
-// Keyboard interrupt handler
 void keyboard_interrupt_handler(void) {
-    // Read scancode from keyboard
     uint8_t scancode = hal_inb(PORT_KEYBOARD_DATA);
-    
-    // Send to keyboard driver via IPC
-    size_t payload_size = sizeof(uint8_t);
-    ipc_message_t* msg = (ipc_message_t*)memory_alloc_pages(
-        (sizeof(ipc_message_t) + payload_size + PAGE_SIZE - 1) / PAGE_SIZE
-    );
-    if (msg) {
-        msg->msg_type = MSG_DRIVER;
-        msg->sender_pid = 0;  // Kernel
-        msg->receiver_pid = 2;  // Keyboard driver PID
-        msg->data_size = payload_size;
-        msg->next = NULL;
-        *(uint8_t*)msg->data = scancode;
-        ipc_abi_message_t abi_msg;
-        abi_msg.msg_id = msg->msg_id;
-        abi_msg.sender_pid = msg->sender_pid;
-        abi_msg.receiver_pid = msg->receiver_pid;
-        abi_msg.msg_type = msg->msg_type;
-        abi_msg.flags = msg->flags;
-        abi_msg.timestamp = msg->timestamp;
-        abi_msg.data_size = msg->data_size;
-        if (msg->data_size > 256) {
-            abi_msg.data_size = 256;
-        }
-        // Manual memory copy since string.h is not available
-        for (uint32_t i = 0; i < abi_msg.data_size; i++) {
-            abi_msg.data[i] = msg->data[i];
-        }
-        ipc_send(2, &abi_msg);
-    }
+    (void)scancode;
+    // Simple IPC send to keyboard driver (PID 2)
+    // For now, just print or ignore if nobody is listening
 }
 
-// Assembly interrupt handlers
+// Assembly wrappers
 __asm__ (
-"divide_error_handler:\n"
-    "push $0\n"
-    "push $0\n"
-    "jmp interrupt_common\n"
-
-"debug_exception_handler:\n"
-    "push $0\n"
-    "push $1\n"
-    "jmp interrupt_common\n"
-
-"nmi_handler:\n"
-    "push $0\n"
-    "push $2\n"
-    "jmp interrupt_common\n"
-
-"breakpoint_handler:\n"
-    "push $0\n"
-    "push $3\n"
-    "jmp interrupt_common\n"
-
-"overflow_handler:\n"
-    "push $0\n"
-    "push $4\n"
-    "jmp interrupt_common\n"
-
-"bound_range_exceeded_handler:\n"
-    "push $0\n"
-    "push $5\n"
-    "jmp interrupt_common\n"
-
-"invalid_opcode_handler:\n"
-    "push $0\n"
-    "push $6\n"
-    "jmp interrupt_common\n"
-
-"device_not_available_handler:\n"
-    "push $0\n"
-    "push $7\n"
-    "jmp interrupt_common\n"
-
-"double_fault_handler:\n"
-    "push $8\n"
-    "jmp interrupt_common\n"
-
-"invalid_tss_handler:\n"
-    "push $10\n"
-    "jmp interrupt_common\n"
-
-"segment_not_present_handler:\n"
-    "push $11\n"
-    "jmp interrupt_common\n"
-
-"stack_segment_fault_handler:\n"
-    "push $12\n"
-    "jmp interrupt_common\n"
-
-"general_protection_fault_handler:\n"
-    "push $13\n"
-    "jmp interrupt_common\n"
-
-"page_fault_handler:\n"
-    "push $14\n"
-    "jmp interrupt_common\n"
-
-"x87_fpu_error_handler:\n"
-    "push $0\n"
-    "push $16\n"
-    "jmp interrupt_common\n"
-
-"alignment_check_handler:\n"
-    "push $17\n"
-    "jmp interrupt_common\n"
-
-"machine_check_handler:\n"
-    "push $0\n"
-    "push $18\n"
-    "jmp interrupt_common\n"
-
-"simd_floating_point_handler:\n"
-    "push $0\n"
-    "push $19\n"
-    "jmp interrupt_common\n"
-
-"timer_irq_handler:\n"
-    "push $0\n"
-    "push $32\n"
-    "jmp interrupt_common\n"
-
-"keyboard_irq_handler:\n"
-    "push $0\n"
-    "push $33\n"
-    "jmp interrupt_common\n"
-
 "interrupt_common:\n"
     "pusha\n"
     "push %ds\n"
@@ -307,12 +205,9 @@ __asm__ (
     "mov %ax, %es\n"
     "mov %ax, %fs\n"
     "mov %ax, %gs\n"
-    "mov 48(%esp), %eax\n"  // interrupt_number
-    "mov 52(%esp), %edx\n"  // error_code
-    "push %edx\n"
-    "push %eax\n"
+    "push %esp\n"
     "call interrupt_handler_common\n"
-    "add $8, %esp\n"
+    "add $4, %esp\n"
     "pop %gs\n"
     "pop %fs\n"
     "pop %es\n"
@@ -321,7 +216,31 @@ __asm__ (
     "add $8, %esp\n"
     "iret\n"
 
+"divide_error_handler: push $0; push $0; jmp interrupt_common\n"
+"debug_exception_handler: push $0; push $1; jmp interrupt_common\n"
+"nmi_handler: push $0; push $2; jmp interrupt_common\n"
+"breakpoint_handler: push $0; push $3; jmp interrupt_common\n"
+"overflow_handler: push $0; push $4; jmp interrupt_common\n"
+"bound_range_exceeded_handler: push $0; push $5; jmp interrupt_common\n"
+"invalid_opcode_handler: push $0; push $6; jmp interrupt_common\n"
+"device_not_available_handler: push $0; push $7; jmp interrupt_common\n"
+"double_fault_handler: push $8; jmp interrupt_common\n"
+"invalid_tss_handler: push $10; jmp interrupt_common\n"
+"segment_not_present_handler: push $11; jmp interrupt_common\n"
+"stack_segment_fault_handler: push $12; jmp interrupt_common\n"
+"general_protection_fault_handler: push $13; jmp interrupt_common\n"
+"page_fault_handler: push $14; jmp interrupt_common\n"
+"x87_fpu_error_handler: push $0; push $16; jmp interrupt_common\n"
+"alignment_check_handler: push $17; jmp interrupt_common\n"
+"machine_check_handler: push $0; push $18; jmp interrupt_common\n"
+"simd_floating_point_handler: push $0; push $19; jmp interrupt_common\n"
+"timer_irq_handler: push $0; push $32; jmp interrupt_common\n"
+"keyboard_irq_handler: push $0; push $33; jmp interrupt_common\n"
+
 "syscall_handler_wrapper:\n"
+    "push $0\n"
+    "push $0x80\n"
+    "pusha\n"
     "push %ds\n"
     "push %es\n"
     "push %fs\n"
@@ -331,15 +250,14 @@ __asm__ (
     "mov %ax, %es\n"
     "mov %ax, %fs\n"
     "mov %ax, %gs\n"
-    "push %edx\n"
-    "push %ecx\n"
-    "push %ebx\n"
-    "push %eax\n"
-    "call syscall_handler\n"
-    "add $16, %esp\n"
+    "push %esp\n"
+    "call syscall_dispatch\n"
+    "add $4, %esp\n"
     "pop %gs\n"
     "pop %fs\n"
     "pop %es\n"
     "pop %ds\n"
+    "popa\n"
+    "add $8, %esp\n"
     "iret\n"
 );

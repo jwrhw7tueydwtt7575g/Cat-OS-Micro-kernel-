@@ -72,4 +72,8 @@ void hal_interrupt_disable(void);
 #define CR0_PE 0x01        // Protected mode enable
 #define CR0_PG 0x80000000  // Paging enable
 
+// GDT functions
+void hal_gdt_init(void);
+void hal_tss_set_esp0(uint32_t esp0);
+
 #endif // HAL_H

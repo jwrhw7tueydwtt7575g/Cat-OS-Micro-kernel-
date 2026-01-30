@@ -54,6 +54,13 @@ static command_t commands[] = {
 
 static const uint32_t command_count = sizeof(commands) / sizeof(commands[0]);
 
+int main(void);
+void _start(void) __attribute__((section(".text.entry")));
+void _start(void) {
+    main();
+    while(1) { process_yield(); }
+}
+
 // Main function
 int main(void) {
     print("MiniSecureOS Shell v1.0\r\n");
